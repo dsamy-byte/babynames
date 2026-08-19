@@ -8,10 +8,13 @@ baby-name trends in Social Security Administration national data from 1880 onwar
 The application includes yearly rankings, long-term volume, searchable name profiles,
 multi-name comparisons, rising and falling names, and annual unisex-name analysis.
 
+![Baby Names overview](docs/images/overview.png)
+
 ## Project status
 
-The repository foundation and raw source dataset are in place. Data processing,
-analysis, and application features will be implemented in subsequent milestones.
+The complete local application, reproducible data pipeline, analytical domain layer,
+automated quality checks, and accessible visual system are in place. Release-readiness
+work is the next milestone.
 
 See [`docs/ROADMAP.md`](docs/ROADMAP.md) for the full milestone plan and completion
 criteria. See [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md) for current decisions, completed
@@ -98,6 +101,8 @@ configuration are documented in
 [`docs/APP_ARCHITECTURE.md`](docs/APP_ARCHITECTURE.md).
 Page-by-page usage and interpretation guidance are available in
 [`docs/USER_GUIDE.md`](docs/USER_GUIDE.md).
+Accessibility decisions and verification are maintained in
+[`docs/ACCESSIBILITY.md`](docs/ACCESSIBILITY.md).
 
 ## License
 

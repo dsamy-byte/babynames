@@ -28,6 +28,7 @@ Logging is configured centrally through `logging_config.py`; the optional
 | `analytics.py` | Own every analytical definition and query |
 | `ui/data_access.py` | Cache the analytics service across Streamlit reruns |
 | `ui/pages.py` | Render page content using public domain methods |
+| `ui/design.py` | Define chart tokens, styling, and testable contrast helpers |
 | `app.py` | Configure Streamlit, handle startup, and define navigation |
 | `logging_config.py` | Validate and apply consistent local diagnostic logging |
 
@@ -52,8 +53,13 @@ setups can override it with `BABYNAMES_PROCESSED_DIR`. This variable changes onl
 generated-artifact location; it never changes the committed raw-data boundary.
 
 Visual defaults live in `.streamlit/config.toml`. The application uses a wide layout,
-an accessible light palette, and disabled telemetry. Page-specific styling should
-prefer Streamlit theme values over fragile HTML selectors.
+an accessible light palette, and disabled telemetry. Page-specific styling uses
+native Streamlit containers and theme values instead of fragile HTML selectors.
+Shared Altair styling and non-color encodings are centralized in `ui/design.py`.
+
+The cached analytics resource precomputes frequently reused name lists, category
+mappings, and annual totals once. Public accessors return immutable tuples or DataFrame
+copies so page rendering is fast without exposing mutable cached state.
 
 ## Startup recovery
 

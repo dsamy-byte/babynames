@@ -55,3 +55,15 @@ indicates a stronger category skew.
 - Category share uses the total published count in the same year and category.
 
 Exact formulas are maintained in `docs/METRICS.md`.
+
+## Refresh the documentation screenshot
+
+After materially changing the default overview, close any process using port 8511 and
+run the documented capture command from the repository root:
+
+```powershell
+python scripts/capture_screenshots.py
+```
+
+The command temporarily runs Streamlit, uses an installed Chrome or Edge executable,
+and replaces `docs/images/overview.png`. It does not download a browser or deploy data.

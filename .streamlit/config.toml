@@ -4,7 +4,20 @@ primaryColor = "#6C4AB6"
 backgroundColor = "#FFFDF8"
 secondaryBackgroundColor = "#F3EFFA"
 textColor = "#201A2E"
-font = "sans-serif"
+font = "Inter, Aptos, Segoe UI, sans-serif"
+headingFont = "Inter, Aptos Display, Segoe UI, sans-serif"
+baseFontSize = 16
+baseFontWeight = 400
+metricValueFontSize = "2rem"
+metricValueFontWeight = 700
+headingFontSizes = ["2.5rem", "1.75rem", "1.3rem"]
+headingFontWeights = [750, 700, 650]
+baseRadius = "0.75rem"
+buttonRadius = "0.6rem"
+borderColor = "#D7CFE5"
+dataframeBorderColor = "#D7CFE5"
+showWidgetBorder = true
+showSidebarBorder = true
 
 [browser]
 gatherUsageStats = false

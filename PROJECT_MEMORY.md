@@ -230,18 +230,50 @@ Verification:
   jobs passed; Node 20 deprecation annotations on artifact-action v4 and v5 led to the
   Node 24-compatible v6 upgrade
 
+### Milestone 8 - Visual polish and accessibility
+
+Status: completed
+
+Completed:
+
+- Established shared Streamlit and Altair tokens for color, typography, borders,
+  radii, axes, legends, and chart titles
+- Added automated WCAG contrast helpers and tests; primary-on-surface is 6.27:1 and
+  text-on-surface is 16.54:1
+- Added color-vision-deficiency-friendly chart palettes, programmatic descriptions,
+  and dash patterns so series do not rely on color alone
+- Refined every page with clear introductions, bordered control and result groups,
+  responsive native layouts, and bounded large tables
+- Precomputed frequently reused name, category, and annual-total lookups in the cached
+  analytics service while preserving immutable/copy-returning public boundaries
+- Added a documented Playwright screenshot command that uses installed Chrome or Edge
+  without downloading a browser
+- Added `docs/ACCESSIBILITY.md` and refreshed the architecture, usage, roadmap, and
+  README presentation documentation
+
+Verification:
+
+- Unified local quality gate: passed
+- Ruff formatting, linting, and docstring rules: passed across 36 files
+- Mypy strict mode: no issues in 26 checked source files
+- Pytest: 39 passed
+- Branch-aware coverage: 83.48% (80% required)
+- Live pip-audit: no known vulnerabilities; local unpublished package skipped as expected
+- Browser capture: fully rendered 1440 x 1100 RGB overview screenshot inspected
+
 ## Current state
 
-- Active milestone: Milestone 8 - Visual polish and accessibility
-- Last completed milestone: Milestone 7 - Engineering automation
+- Active milestone: Milestone 9 - Release readiness
+- Last completed milestone: Milestone 8 - Visual polish and accessibility
 - Latest quality result: PASS with zero issues
 
 ## Open decisions
 
 - Select a software license before the first public release
-- Confirm the detailed v1 feature and visual-design requirements
+- Select the exact `v1.0.0` release notes and known-limitations wording
 
 ## Next task
 
-Refine the visual system, responsive layouts, keyboard and contrast behavior, chart
-accessibility, loading performance, screenshots, and final presentation polish.
+Run release-readiness validation from a clean environment, verify supported setup,
+resolve or document remaining limitations, select a license, prepare release notes,
+and tag version `v1.0.0` only after explicit approval.

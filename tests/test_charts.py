@@ -14,6 +14,7 @@ def test_annual_chart_has_explicit_axes_and_tooltips() -> None:
     assert specification["encoding"]["x"]["title"] == "Year"
     assert specification["encoding"]["y"]["title"] == "Published applications"
     assert len(specification["encoding"]["tooltip"]) == 2
+    assert specification["description"]
 
 
 def test_rank_history_reverses_axis_and_colors_categories() -> None:
@@ -25,6 +26,7 @@ def test_rank_history_reverses_axis_and_colors_categories() -> None:
 
     assert specification["encoding"]["y"]["scale"]["reverse"] is True
     assert specification["encoding"]["color"]["field"] == "sex"
+    assert specification["encoding"]["strokeDash"]["field"] == "sex"
 
 
 def test_comparison_chart_uses_name_as_series() -> None:
@@ -35,4 +37,5 @@ def test_comparison_chart_uses_name_as_series() -> None:
     specification = comparison_chart(history, "share").to_dict()
 
     assert specification["encoding"]["color"]["field"] == "name"
+    assert specification["encoding"]["strokeDash"]["field"] == "name"
     assert specification["encoding"]["y"]["title"] == "Share of category"

@@ -94,6 +94,20 @@ class BabyNameAnalytics:
         self._canonical_names = {
             str(name).casefold(): str(name) for name in data["name"].drop_duplicates()
         }
+        self._available_names = tuple(sorted(data["name"].unique(), key=str.casefold))
+        self._available_names_by_sex = {
+            sex: tuple(sorted(data.loc[data["sex"] == sex, "name"].unique(), key=str.casefold))
+            for sex in sorted(ALLOWED_SEX_VALUES)
+        }
+        self._categories_by_name = {
+            str(name): tuple(sorted(group["sex"].unique()))
+            for name, group in data.groupby("name", observed=True, sort=False)
+        }
+        self._annual_totals = self._calculate_annual_totals(data)
+        self._annual_totals_by_sex = {
+            sex: self._calculate_annual_totals(data.loc[data["sex"] == sex])
+            for sex in sorted(ALLOWED_SEX_VALUES)
+        }
 
     @classmethod
     def from_parquet(cls, path: Path) -> BabyNameAnalytics:
@@ -141,26 +155,31 @@ class BabyNameAnalytics:
             raise AnalyticsInputError(f"Name was not found: {name!r}")
         return self._canonical_names[normalized]
 
+    @staticmethod
+    def _calculate_annual_totals(data: pd.DataFrame) -> pd.DataFrame:
+        """Calculate immutable-at-boundary annual totals for constructor caches."""
+        return (
+            data.groupby("year", observed=True, as_index=False)
+            .agg(count=("count", "sum"))
+            .sort_values("year", ignore_index=True)
+        )
+
     def available_names(self, sex: str | None = None) -> tuple[str, ...]:
         """Return canonical name spellings in case-insensitive alphabetical order."""
-        data = self._data
-        if sex is not None:
-            data = data.loc[data["sex"] == self._validate_sex(sex)]
-        return tuple(sorted(data["name"].unique(), key=str.casefold))
+        if sex is None:
+            return self._available_names
+        return self._available_names_by_sex[self._validate_sex(sex)]
 
     def name_categories(self, name: str) -> tuple[str, ...]:
         """Return source sex categories with published observations for a name."""
         canonical_name = self._resolve_name(name)
-        categories = self._data.loc[self._data["name"] == canonical_name, "sex"].unique()
-        return tuple(sorted(categories))
+        return self._categories_by_name[canonical_name]
 
     def annual_totals(self, sex: str | None = None) -> pd.DataFrame:
         """Return total published applications per year, optionally for one category."""
-        data = self._data
-        if sex is not None:
-            data = data.loc[data["sex"] == self._validate_sex(sex)]
-        totals = data.groupby("year", observed=True, as_index=False).agg(count=("count", "sum"))
-        return totals.sort_values("year", ignore_index=True)
+        if sex is None:
+            return self._annual_totals.copy()
+        return self._annual_totals_by_sex[self._validate_sex(sex)].copy()
 
     def rankings(self, year: int, sex: str, *, limit: int = 10) -> pd.DataFrame:
         """Return the most popular names for one year and source sex category."""

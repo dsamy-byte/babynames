@@ -58,13 +58,24 @@ def _metric_label(metric: str) -> str:
     return METRIC_LABELS[metric]
 
 
+def _page_header(eyebrow: str, title: str, description: str) -> None:
+    """Render consistent page identity with a concise plain-language introduction."""
+    st.caption(eyebrow.upper())
+    st.title(title)
+    st.markdown(description)
+
+
 def render_overview(analytics: BabyNameAnalytics, manifest: Mapping[str, Any]) -> None:
     """Render dataset context, long-term volume, and configurable yearly rankings."""
     first_year, last_year = analytics.year_range
-    st.title("Baby Names")
-    st.caption("Explore U.S. Social Security baby-name records across generations.")
+    _page_header(
+        "National data explorer",
+        "Baby Names",
+        "Trace how names rise, fade, and return across generations of U.S. Social "
+        "Security applications.",
+    )
 
-    coverage, records, applications = st.columns(3)
+    coverage, records, applications = st.columns(3, gap="medium", border=True)
     coverage.metric("Coverage", f"{first_year}–{last_year}")
     records.metric("Published records", f"{int(manifest['rows']):,}")
     applications.metric("Recorded applications", f"{int(manifest['applications']):,}")
@@ -86,7 +97,7 @@ def render_overview(analytics: BabyNameAnalytics, manifest: Mapping[str, Any]) -
         key="overview_year",
     )
     st.subheader(f"Most popular names in {ranking_year}")
-    female, male = st.columns(2)
+    female, male = st.columns(2, gap="large", border=True)
     for column, sex in ((female, "F"), (male, "M")):
         with column:
             st.markdown(f"**{CATEGORY_LABELS[sex]}**")
@@ -94,33 +105,40 @@ def render_overview(analytics: BabyNameAnalytics, manifest: Mapping[str, Any]) -
                 analytics.rankings(ranking_year, sex),
                 hide_index=True,
                 width="stretch",
+                height=390,
                 column_config={"share": st.column_config.NumberColumn(format="%.2%%")},
             )
 
 
 def render_explore(analytics: BabyNameAnalytics) -> None:
     """Render searchable history, summary milestones, charts, and source observations."""
-    st.title("Explore a name")
-    st.caption("Search is case-insensitive; displayed spelling comes from the source data.")
+    _page_header(
+        "Name profile",
+        "Explore a name",
+        "Follow one name through its published history, peaks, rankings, and share of "
+        "its source category.",
+    )
     names = analytics.available_names()
-    selected_name = st.selectbox(
-        "Name",
-        names,
-        index=_preferred_name(names, "Olivia"),
-        key="explore_name",
-    )
-    categories = analytics.name_categories(selected_name)
-    selected_sex = st.radio(
-        "Source category",
-        categories,
-        format_func=CATEGORY_LABELS.get,
-        horizontal=True,
-        key="explore_sex",
-    )
+    with st.container(border=True):
+        selected_name = st.selectbox(
+            "Name",
+            names,
+            index=_preferred_name(names, "Olivia"),
+            key="explore_name",
+            help="Type to search the complete list of published name spellings.",
+        )
+        categories = analytics.name_categories(selected_name)
+        selected_sex = st.radio(
+            "Source category",
+            categories,
+            format_func=CATEGORY_LABELS.get,
+            horizontal=True,
+            key="explore_sex",
+        )
     history = analytics.name_history(selected_name, selected_sex)
     summary = analytics.name_summary(selected_name, selected_sex)
 
-    first, total, peak, rank = st.columns(4)
+    first, total, peak, rank = st.columns(4, gap="small", border=True)
     first.metric("Published span", f"{summary.first_year}–{summary.last_year}")
     total.metric("Recorded applications", f"{summary.total_applications:,}")
     peak.metric("Peak annual count", f"{summary.peak_count:,}", f"in {summary.peak_count_year}")
@@ -150,31 +168,37 @@ def render_explore(analytics: BabyNameAnalytics) -> None:
             history.sort_values("year", ascending=False),
             hide_index=True,
             width="stretch",
+            height=420,
             column_config={"share": st.column_config.NumberColumn(format="%.3%%")},
         )
 
 
 def render_compare(analytics: BabyNameAnalytics) -> None:
     """Render a category-specific comparison for two to five names."""
-    st.title("Compare names")
-    selected_sex = st.radio(
-        "Source category",
-        ("F", "M"),
-        format_func=CATEGORY_LABELS.get,
-        horizontal=True,
-        key="compare_sex",
+    _page_header(
+        "Side-by-side history",
+        "Compare names",
+        "Put two to five names on the same scale to compare popularity across time.",
     )
-    names = analytics.available_names(selected_sex)
-    preferred = [name for name in ("Olivia", "Emma") if name in names]
-    defaults = preferred if len(preferred) == 2 else list(names[:2])
-    selected_names = st.multiselect(
-        "Names",
-        names,
-        default=defaults,
-        max_selections=5,
-        key="compare_names",
-        help="Choose between two and five names.",
-    )
+    with st.container(border=True):
+        selected_sex = st.radio(
+            "Source category",
+            ("F", "M"),
+            format_func=CATEGORY_LABELS.get,
+            horizontal=True,
+            key="compare_sex",
+        )
+        names = analytics.available_names(selected_sex)
+        preferred = [name for name in ("Olivia", "Emma") if name in names]
+        defaults = preferred if len(preferred) == 2 else list(names[:2])
+        selected_names = st.multiselect(
+            "Names",
+            names,
+            default=defaults,
+            max_selections=5,
+            key="compare_names",
+            help="Choose between two and five names. Type to search the list.",
+        )
     if len(selected_names) < 2:
         st.info("Choose at least two names to compare.")
         return
@@ -217,12 +241,18 @@ def render_compare(analytics: BabyNameAnalytics) -> None:
         ],
         hide_index=True,
         width="stretch",
+        height=250,
     )
 
 
 def render_trends(analytics: BabyNameAnalytics) -> None:
     """Render endpoint movers and annual unisex-name discovery tools."""
-    st.title("Discover trends")
+    _page_header(
+        "Pattern finder",
+        "Discover trends",
+        "Find the largest rank movers between two years or names published in both "
+        "source categories.",
+    )
     movers_tab, unisex_tab = st.tabs(["Rising and falling", "Unisex names"])
     first_year, last_year = analytics.year_range
 
@@ -268,6 +298,7 @@ def render_trends(analytics: BabyNameAnalytics) -> None:
                 changes,
                 hide_index=True,
                 width="stretch",
+                height=520,
                 column_config={
                     "start_share": st.column_config.NumberColumn(format="%.3%%"),
                     "end_share": st.column_config.NumberColumn(format="%.3%%"),
@@ -292,6 +323,7 @@ def render_trends(analytics: BabyNameAnalytics) -> None:
             unisex,
             hide_index=True,
             width="stretch",
+            height=560,
             column_config={
                 "female_share": st.column_config.NumberColumn(format="%.1%%"),
                 "balance_score": st.column_config.ProgressColumn(min_value=0, max_value=1),
@@ -304,7 +336,12 @@ def render_trends(analytics: BabyNameAnalytics) -> None:
 
 def render_about(manifest: Mapping[str, Any]) -> None:
     """Render source provenance, limitations, metric links, and build information."""
-    st.title("About the data")
+    _page_header(
+        "Method and provenance",
+        "About the data",
+        "Understand what the Social Security dataset represents and how this app "
+        "calculates its metrics.",
+    )
     st.markdown(
         "This application uses national Social Security card application records. "
         "Names with fewer than five records in a category and year are suppressed, "

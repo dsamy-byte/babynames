@@ -101,7 +101,7 @@ Status: complete
 
 ## Milestone 8 - Visual polish and accessibility
 
-Status: next
+Status: complete
 
 - Establish a coherent visual system for color, type, spacing, and charts.
 - Improve responsive behavior for common desktop and mobile widths.
@@ -111,7 +111,7 @@ Status: next
 
 ## Milestone 9 - Release readiness
 
-Status: planned
+Status: next
 
 - Run the full test and data-validation suites from a clean environment.
 - Verify documented setup on the supported Python version.

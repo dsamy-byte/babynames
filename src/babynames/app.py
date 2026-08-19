@@ -57,28 +57,33 @@ def main() -> None:
 
     st.sidebar.title("Baby Names")
     st.sidebar.caption(f"National data · {analytics.year_range[0]}–{analytics.year_range[1]}")
+    st.sidebar.divider()
     navigation = st.navigation(
         {
             "Explore": [
                 st.Page(
                     partial(render_overview, analytics, status.manifest),
                     title="Overview",
+                    icon=":material/space_dashboard:",
                     url_path="overview",
                     default=True,
                 ),
                 st.Page(
                     partial(render_explore, analytics),
                     title="Name search",
+                    icon=":material/search:",
                     url_path="names",
                 ),
                 st.Page(
                     partial(render_compare, analytics),
                     title="Compare",
+                    icon=":material/compare_arrows:",
                     url_path="compare",
                 ),
                 st.Page(
                     partial(render_trends, analytics),
                     title="Trends",
+                    icon=":material/trending_up:",
                     url_path="trends",
                 ),
             ],
@@ -86,12 +91,14 @@ def main() -> None:
                 st.Page(
                     partial(render_about, status.manifest),
                     title="About the data",
+                    icon=":material/info:",
                     url_path="about",
                 ),
             ],
         },
         expanded=True,
     )
+    st.sidebar.caption("Counts below five are suppressed in the source data.")
     navigation.run()
 
 
