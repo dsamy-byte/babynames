@@ -13,6 +13,15 @@ authors = [
 ]
 dependencies = []
 
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.4,<10",
+  "ruff>=0.12,<1",
+]
+
+[project.scripts]
+babynames-validate = "babynames.data_validation:main"
+
 [tool.setuptools.packages.find]
 where = ["src"]
 

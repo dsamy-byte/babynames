@@ -70,11 +70,33 @@ Completed:
   and the commit/push workflow
 - Linked the roadmap and project memory from the README
 
+### Milestone 2 - Data profiling and validation
+
+Status: completed
+
+Completed:
+
+- Added a reusable standard-library validation and profiling module
+- Added the `babynames-validate` command with deterministic JSON and Markdown output
+- Defined filename, year coverage, encoding, row, name, sex, count, and uniqueness rules
+- Documented the raw-data contract and initial processed-data schema
+- Added five focused unit tests and one full-snapshot integration test
+- Added isolated development dependencies for pytest and Ruff
+- Generated and committed the full-snapshot quality reports
+
+Verification:
+
+- Ruff: passed
+- Pytest: 6 passed
+- Full validation: passed with zero issues
+- Validated totals: 146 files, 2,181,032 rows, 375,362,447 recorded applications,
+  and 105,966 unique name spellings
+
 ## Current state
 
-- Active milestone: Milestone 2 - Data profiling and validation
-- Last completed milestone: Milestone 1 - Repository foundation
-- Repository state at the start of Milestone 2: documented and pushed
+- Active milestone: Milestone 3 - Reproducible data pipeline
+- Last completed milestone: Milestone 2 - Data profiling and validation
+- Latest quality result: PASS with zero issues
 
 ## Open decisions
 
@@ -83,5 +105,5 @@ Completed:
 
 ## Next task
 
-Profile and validate the raw dataset through tested, reusable Python code, then define
-the processed-data schema.
+Design and implement the reproducible data pipeline that converts validated annual
+files into an optimized combined dataset without modifying the raw source files.

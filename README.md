@@ -37,8 +37,31 @@ The current snapshot contains 146 annual files covering 1880 through 2025.
 
 ## Development
 
-The application targets Python 3.11 or newer. Setup and run commands will be added
-when the first executable application milestone is implemented.
+The application targets Python 3.11 or newer. From PowerShell, create an isolated
+environment and install the project with its development tools:
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install -e ".[dev]"
+```
+
+Validate and profile the complete raw dataset:
+
+```powershell
+babynames-validate
+```
+
+Run the automated checks:
+
+```powershell
+python -m ruff check .
+python -m pytest
+```
+
+The raw-data rules and processed-data schema are documented in
+[`docs/DATA_CONTRACT.md`](docs/DATA_CONTRACT.md). The latest validation results are
+available in [`reports/data_quality_report.md`](reports/data_quality_report.md).
 
 ## License
 

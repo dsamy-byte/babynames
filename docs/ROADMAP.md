@@ -31,7 +31,7 @@ Status: complete
 
 ## Milestone 2 - Data profiling and validation
 
-Status: next
+Status: complete
 
 - Convert exploratory profiling into reusable Python modules and commands.
 - Define the raw-file contract: filename, year, encoding, columns, and value rules.
@@ -43,7 +43,7 @@ Status: next
 
 ## Milestone 3 - Reproducible data pipeline
 
-Status: planned
+Status: next
 
 - Load all valid annual files and derive the year from each filename.
 - Normalize column names and data types without modifying raw files.
