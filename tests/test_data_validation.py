@@ -1,3 +1,5 @@
+"""Focused tests for raw-data validation, profiling, and report generation."""
+
 from __future__ import annotations
 
 import json
@@ -7,10 +9,12 @@ from babynames.data_validation import render_markdown, validate_dataset, write_r
 
 
 def write_year(directory: Path, year: int, rows: str) -> None:
+    """Create a minimal annual fixture using the production filename convention."""
     (directory / f"yob{year}.txt").write_text(rows, encoding="utf-8")
 
 
 def test_valid_dataset_is_profiled(tmp_path: Path) -> None:
+    """A complete valid fixture should produce accurate aggregate statistics."""
     write_year(tmp_path, 2000, "Alice,F,10\nSam,M,7\nSam,F,6\n")
     write_year(tmp_path, 2001, "Alice,F,8\nBob,M,9\n")
 
@@ -26,6 +30,7 @@ def test_valid_dataset_is_profiled(tmp_path: Path) -> None:
 
 
 def test_contract_violations_are_reported(tmp_path: Path) -> None:
+    """Independent row and coverage violations should all be reported in one run."""
     write_year(
         tmp_path,
         2000,
@@ -48,6 +53,7 @@ def test_contract_violations_are_reported(tmp_path: Path) -> None:
 
 
 def test_invalid_filename_is_reported(tmp_path: Path) -> None:
+    """A year-like file with the wrong filename shape should fail validation."""
     (tmp_path / "yob20.txt").write_text("Alice,F,10\n", encoding="utf-8")
 
     report = validate_dataset(tmp_path, first_year=2000, expected_last_year=2000)
@@ -56,6 +62,7 @@ def test_invalid_filename_is_reported(tmp_path: Path) -> None:
 
 
 def test_missing_directory_is_reported(tmp_path: Path) -> None:
+    """A missing source directory should return a report instead of raising an error."""
     report = validate_dataset(tmp_path / "missing", first_year=2000, expected_last_year=2000)
 
     assert not report.valid
@@ -63,6 +70,7 @@ def test_missing_directory_is_reported(tmp_path: Path) -> None:
 
 
 def test_reports_are_deterministic_and_serializable(tmp_path: Path) -> None:
+    """Repeated report writes should produce identical valid JSON and Markdown."""
     raw_dir = tmp_path / "raw"
     output_dir = tmp_path / "reports"
     raw_dir.mkdir()

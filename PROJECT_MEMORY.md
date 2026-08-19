@@ -39,6 +39,9 @@ comparing, and visualizing U.S. baby-name data.
 - Never commit credentials, tokens, local secrets, or virtual environments
 - Prefer repeatable scripts and commands over manual data changes
 - Keep commits focused on one completed task or milestone
+- Thoroughly document code with current module, class, and function docstrings;
+  explain non-obvious reasoning and constraints with focused comments
+- Enforce the baseline documentation standard through Ruff docstring rules
 - Before each commit, update this memory when progress, decisions, risks, or the next
   task have changed
 - Use `docs/ROADMAP.md` for the stable long-term plan and this file for live project
@@ -69,6 +72,8 @@ Completed:
 - Added `docs/ROADMAP.md` with all ten milestones, acceptance-oriented task lists,
   and the commit/push workflow
 - Linked the roadmap and project memory from the README
+- Made in-code documentation an enforced project standard and documented the
+  convention in the roadmap
 
 ### Milestone 2 - Data profiling and validation
 

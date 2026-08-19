@@ -16,6 +16,11 @@ For every task:
 6. Create a focused commit with a descriptive message.
 7. Push the commit to `main` and confirm the working tree is clean.
 
+All code must include useful in-code documentation. Modules, classes, and functions
+receive docstrings that explain purpose and contracts; comments capture non-obvious
+reasoning and constraints. Documentation must stay current when behavior changes.
+Automated linting enforces the baseline docstring standard.
+
 A milestone is complete only when its acceptance criteria pass, its documentation is
 current, and its commits have been pushed.
 

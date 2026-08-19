@@ -70,12 +70,14 @@ def _issue(
     path: Path | None = None,
     row: int | None = None,
 ) -> None:
+    """Append a consistently structured issue to the active validation result."""
     issues.append(
         ValidationIssue(code=code, message=message, file=path.name if path else None, row=row)
     )
 
 
 def _validate_file(path: Path, year: int, issues: list[ValidationIssue]) -> YearProfile:
+    """Validate and profile one annual file while collecting every discoverable issue."""
     rows = applications = female = male = 0
     minimum: int | None = None
     maximum: int | None = None

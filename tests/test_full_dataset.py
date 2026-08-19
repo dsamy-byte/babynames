@@ -1,9 +1,12 @@
+"""Integration coverage for the complete committed SSA data snapshot."""
+
 from pathlib import Path
 
 from babynames.data_validation import validate_dataset
 
 
 def test_committed_snapshot_satisfies_contract() -> None:
+    """Guard the validated snapshot contract and known aggregate totals."""
     project_root = Path(__file__).resolve().parents[1]
 
     report = validate_dataset(project_root / "data" / "raw" / "names")
