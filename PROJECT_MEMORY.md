@@ -226,8 +226,9 @@ Verification:
 - Pytest: 36 passed
 - Branch-aware coverage: 82.83% (80% required)
 - Live pip-audit: no known vulnerabilities; local unpublished package skipped as expected
-- First remote GitHub Actions execution: all Python 3.11, Python 3.14, and dependency
-  audit jobs passed; a Node 20 artifact-action warning was identified and upgraded
+- Remote GitHub Actions executions: all Python 3.11, Python 3.14, and dependency audit
+  jobs passed; Node 20 deprecation annotations on artifact-action v4 and v5 led to the
+  Node 24-compatible v6 upgrade
 
 ## Current state
 
