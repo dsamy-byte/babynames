@@ -287,6 +287,15 @@ Completed:
 - Added a durable release checklist, explicit known limitations, and draft changelog
 - Added the MIT License and declared it in package and user-facing metadata while
   distinguishing the separately sourced SSA data
+- Corrected every share table to use Streamlit's supported percentage formatter, so
+  fractional values display as concise percentages instead of long raw decimals
+
+Latest UI verification:
+
+- Browser inspection confirmed Olivia's 2025 category share renders as `0.84%` and
+  Liam's as `1.22%`
+- Post-fix quality gate passed with 40 tests, 83.50% branch coverage, strict typing,
+  formatting, linting, and no known dependency vulnerabilities
 
 Remaining:
 

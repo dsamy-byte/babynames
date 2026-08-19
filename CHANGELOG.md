@@ -25,4 +25,8 @@ and the project uses semantic versioning for release tags.
 - SSA suppression means absent observations cannot be treated as zero.
 - Manual screen-reader and 200% zoom acceptance checks remain before `v1.0.0`.
 
+### Fixed
+
+- Share columns now display concise percentages instead of long fractional decimals.
+
 [Unreleased]: https://github.com/dsamy-byte/babynames/compare/main...HEAD

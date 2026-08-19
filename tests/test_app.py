@@ -11,6 +11,12 @@ from streamlit.testing.v1 import AppTest
 from babynames.analytics import BabyNameAnalytics
 from babynames.data_pipeline import build_dataset
 from babynames.settings import PROCESSED_DIR_ENV
+from babynames.ui.pages import PERCENT_FORMAT
+
+
+def test_dataframe_shares_use_streamlit_percentage_format() -> None:
+    """Fractional share values should render as concise percentages in every table."""
+    assert PERCENT_FORMAT == "percent"
 
 
 def render_page_harness(page_name: str, arguments: tuple[object, ...]) -> None:

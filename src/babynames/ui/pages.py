@@ -21,6 +21,7 @@ METRIC_LABELS = {
     "rank": "Rank",
     "share": "Category share",
 }
+PERCENT_FORMAT = "percent"
 
 
 def _preferred_name(names: tuple[str, ...], preferred: str) -> int:
@@ -106,7 +107,7 @@ def render_overview(analytics: BabyNameAnalytics, manifest: Mapping[str, Any]) -
                 hide_index=True,
                 width="stretch",
                 height=390,
-                column_config={"share": st.column_config.NumberColumn(format="%.2%%")},
+                column_config={"share": st.column_config.NumberColumn(format=PERCENT_FORMAT)},
             )
 
 
@@ -169,7 +170,7 @@ def render_explore(analytics: BabyNameAnalytics) -> None:
             hide_index=True,
             width="stretch",
             height=420,
-            column_config={"share": st.column_config.NumberColumn(format="%.3%%")},
+            column_config={"share": st.column_config.NumberColumn(format=PERCENT_FORMAT)},
         )
 
 
@@ -300,9 +301,9 @@ def render_trends(analytics: BabyNameAnalytics) -> None:
                 width="stretch",
                 height=520,
                 column_config={
-                    "start_share": st.column_config.NumberColumn(format="%.3%%"),
-                    "end_share": st.column_config.NumberColumn(format="%.3%%"),
-                    "share_change": st.column_config.NumberColumn(format="%+.3%%"),
+                    "start_share": st.column_config.NumberColumn(format=PERCENT_FORMAT),
+                    "end_share": st.column_config.NumberColumn(format=PERCENT_FORMAT),
+                    "share_change": st.column_config.NumberColumn(format=PERCENT_FORMAT),
                 },
             )
             st.caption(
@@ -325,7 +326,7 @@ def render_trends(analytics: BabyNameAnalytics) -> None:
             width="stretch",
             height=560,
             column_config={
-                "female_share": st.column_config.NumberColumn(format="%.1%%"),
+                "female_share": st.column_config.NumberColumn(format=PERCENT_FORMAT),
                 "balance_score": st.column_config.ProgressColumn(min_value=0, max_value=1),
             },
         )
