@@ -48,7 +48,7 @@ Status: complete
 
 ## Milestone 3 - Reproducible data pipeline
 
-Status: next
+Status: complete
 
 - Load all valid annual files and derive the year from each filename.
 - Normalize column names and data types without modifying raw files.
@@ -59,7 +59,7 @@ Status: next
 
 ## Milestone 4 - Analysis domain layer
 
-Status: planned
+Status: next
 
 - Implement popularity and rank by year and sex.
 - Implement individual-name history and multi-name comparison.

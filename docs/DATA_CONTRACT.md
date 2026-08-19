@@ -37,14 +37,33 @@ automation and Markdown for review.
 
 ## Processed-data schema
 
-Milestone 3 will produce a normalized table with these initial fields:
+The `babynames-build` command produces `data/processed/baby_names.parquet` with this
+normalized schema:
 
-| Field | Type | Meaning |
+| Field | Parquet type | Meaning |
 |---|---|---|
-| `year` | integer | Year derived from the source filename |
+| `year` | 16-bit integer | Year derived from the source filename |
 | `name` | string | SSA-provided name spelling |
-| `sex` | categorical string | Source category, `F` or `M` |
-| `count` | positive integer | Published number of applications |
+| `sex` | dictionary-compressed string | Source category, `F` or `M` |
+| `count` | 32-bit integer | Published number of applications |
 
 The unique key is `(year, name, sex)`. Derived rankings and analytical measures will
 be calculated in the domain layer rather than silently added to the raw facts.
+
+Rows have a canonical sort order: year ascending, sex ascending, count descending,
+then name ascending. The file uses Zstandard compression.
+
+## Build traceability and safety
+
+`data/processed/manifest.json` records:
+
+- the pipeline contract version;
+- processed row, application, year, and unique-name totals;
+- every annual source filename, size, and SHA-256 checksum;
+- the processed schema and canonical sort order; and
+- the Parquet filename, size, compression, and SHA-256 checksum.
+
+The pipeline validates all raw files before processing. Parquet and manifest files
+are built through temporary siblings and atomically replace previous outputs only
+after complete writes. Rebuilding unchanged inputs produces identical Parquet and
+manifest content with the supported dependency versions.

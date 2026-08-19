@@ -97,10 +97,34 @@ Verification:
 - Validated totals: 146 files, 2,181,032 rows, 375,362,447 recorded applications,
   and 105,966 unique name spellings
 
+### Milestone 3 - Reproducible data pipeline
+
+Status: completed
+
+Completed:
+
+- Added the `babynames-build` command and documented its local workflow
+- Added PyArrow as a runtime dependency
+- Built a compact Parquet dataset with explicit `int16`, string, string, and `int32`
+  columns and Zstandard compression
+- Added a canonical sort independent of annual source row order
+- Added validation-before-build and atomic replacement of generated artifacts
+- Added a deterministic manifest with source and output SHA-256 checksums
+- Added three focused unit tests and one full-snapshot build integration test
+- Kept generated artifacts under the ignored `data/processed/` boundary
+
+Verification:
+
+- Ruff formatting and linting: passed
+- Pytest: 10 passed
+- Full build: 2,181,032 rows in a 9,932,481-byte Parquet file
+- Full build SHA-256: `a195f6bcb5b02087fe43c1627fc1da62ef8047f146d00bc3a011f753734a4967`
+- Repeated-build manifest hashes: identical
+
 ## Current state
 
-- Active milestone: Milestone 3 - Reproducible data pipeline
-- Last completed milestone: Milestone 2 - Data profiling and validation
+- Active milestone: Milestone 4 - Analysis domain layer
+- Last completed milestone: Milestone 3 - Reproducible data pipeline
 - Latest quality result: PASS with zero issues
 
 ## Open decisions
@@ -110,5 +134,6 @@ Verification:
 
 ## Next task
 
-Design and implement the reproducible data pipeline that converts validated annual
-files into an optimized combined dataset without modifying the raw source files.
+Define the analytical metric contracts, then implement and test popularity rankings,
+name histories, comparisons, trends, and unisex-name analysis independently of the
+Streamlit interface.

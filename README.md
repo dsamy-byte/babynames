@@ -52,6 +52,15 @@ Validate and profile the complete raw dataset:
 babynames-validate
 ```
 
+Build the validated, combined Parquet dataset and checksum manifest:
+
+```powershell
+babynames-build
+```
+
+Generated artifacts are written to `data/processed/`. They are intentionally ignored
+by Git because the command reproduces them from the committed raw files.
+
 Run the automated checks:
 
 ```powershell
