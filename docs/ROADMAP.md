@@ -70,7 +70,7 @@ Status: complete
 
 ## Milestone 5 - Application foundation
 
-Status: next
+Status: complete
 
 - Add pinned runtime and development dependencies.
 - Establish Streamlit entry points, page structure, navigation, configuration, and theme.
@@ -80,7 +80,7 @@ Status: next
 
 ## Milestone 6 - Core user experience
 
-Status: planned
+Status: next
 
 - Build an overview dashboard with key dataset facts and trends.
 - Build name search with suggestions and a complete historical profile.

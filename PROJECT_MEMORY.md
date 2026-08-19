@@ -144,10 +144,35 @@ Verification:
 - Full analytics integration: confirmed 1880-2025 coverage, Olivia and Liam as the
   2025 category leaders, and 5,250,638 published male applications for James
 
+### Milestone 5 - Application foundation
+
+Status: completed
+
+Completed:
+
+- Added Streamlit 1.61 as a bounded runtime dependency
+- Added a documented local application entry point and themed Streamlit configuration
+- Added stable navigation paths for overview, name search, comparison, trends, and
+  data provenance
+- Added processed-artifact startup checks for missing, malformed, unsafe, partial, or
+  mismatched local files
+- Added cached analytics loading keyed by Parquet path, modification time, and size
+- Added user-safe build guidance and developer logging for startup failures
+- Added a working overview with latest-year category rankings and dataset metrics
+- Added documented shells for the Milestone 6 user workflows
+- Added `BABYNAMES_PROCESSED_DIR` for tests and advanced local layouts
+- Documented runtime flow and module boundaries in `docs/APP_ARCHITECTURE.md`
+
+Verification:
+
+- Ruff formatting, linting, and docstring rules: passed
+- Pytest: 29 passed across the complete project
+- Streamlit smoke tests: missing-data recovery and ready-data overview both passed
+
 ## Current state
 
-- Active milestone: Milestone 5 - Application foundation
-- Last completed milestone: Milestone 4 - Analysis domain layer
+- Active milestone: Milestone 6 - Core user experience
+- Last completed milestone: Milestone 5 - Application foundation
 - Latest quality result: PASS with zero issues
 
 ## Open decisions
@@ -157,5 +182,5 @@ Verification:
 
 ## Next task
 
-Establish the Streamlit application entry point, navigation, configuration, visual
-theme, cached data access, dependency setup, and user-safe startup/error behavior.
+Build the complete overview, name-search, comparison, and trend-discovery workflows
+with clear charts, filters, tables, metric definitions, and accessible interactions.

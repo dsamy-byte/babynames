@@ -61,6 +61,16 @@ babynames-build
 Generated artifacts are written to `data/processed/`. They are intentionally ignored
 by Git because the command reproduces them from the committed raw files.
 
+Launch the local application:
+
+```powershell
+streamlit run src/babynames/app.py
+```
+
+Streamlit prints the local URL and opens it in your default browser. If generated
+data is missing or inconsistent, the application displays the validation and build
+commands needed to recover safely.
+
 Run the automated checks:
 
 ```powershell
@@ -73,6 +83,9 @@ The raw-data rules and processed-data schema are documented in
 available in [`reports/data_quality_report.md`](reports/data_quality_report.md).
 Ranking, share, trend, comparison, summary, and unisex definitions are documented in
 [`docs/METRICS.md`](docs/METRICS.md).
+The Streamlit startup flow, module boundaries, cache behavior, navigation, and local
+configuration are documented in
+[`docs/APP_ARCHITECTURE.md`](docs/APP_ARCHITECTURE.md).
 
 ## License
 
