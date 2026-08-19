@@ -101,7 +101,9 @@ class BabyNameAnalytics:
         if not path.is_file():
             raise AnalyticsError(f"Processed dataset does not exist: {path}")
         try:
-            table = pq.read_table(path, columns=["year", "name", "sex", "count"])
+            table = pq.read_table(  # type: ignore[no-untyped-call]
+                path, columns=["year", "name", "sex", "count"]
+            )
         except (OSError, ValueError) as error:
             raise AnalyticsError(f"Could not read processed dataset: {error}") from error
         return cls(table.to_pandas())
@@ -157,11 +159,8 @@ class BabyNameAnalytics:
         data = self._data
         if sex is not None:
             data = data.loc[data["sex"] == self._validate_sex(sex)]
-        return (
-            data.groupby("year", observed=True, as_index=False)["count"]
-            .sum()
-            .sort_values("year", ignore_index=True)
-        )
+        totals = data.groupby("year", observed=True, as_index=False).agg(count=("count", "sum"))
+        return totals.sort_values("year", ignore_index=True)
 
     def rankings(self, year: int, sex: str, *, limit: int = 10) -> pd.DataFrame:
         """Return the most popular names for one year and source sex category."""

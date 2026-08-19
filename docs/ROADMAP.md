@@ -91,7 +91,7 @@ Status: complete
 
 ## Milestone 7 - Engineering automation
 
-Status: next
+Status: complete
 
 - Configure formatting, linting, type checking, and test coverage.
 - Add GitHub Actions checks for every push and pull request.
@@ -101,7 +101,7 @@ Status: next
 
 ## Milestone 8 - Visual polish and accessibility
 
-Status: planned
+Status: next
 
 - Establish a coherent visual system for color, type, spacing, and charts.
 - Improve responsive behavior for common desktop and mobile widths.

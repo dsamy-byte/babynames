@@ -199,10 +199,38 @@ Verification:
 - Streamlit tests: missing-data, ready overview, name search, comparison, trends, and
   about render paths passed
 
+### Milestone 7 - Engineering automation
+
+Status: completed
+
+Completed:
+
+- Added `python scripts/check.py` as the documented cross-platform local quality gate
+- Added strict mypy checks for source, test, and script modules
+- Resolved pandas and Streamlit type ambiguities and narrowly documented incomplete
+  PyArrow stub boundaries
+- Added branch-aware pytest coverage with an enforced 80% project threshold
+- Added environment-driven centralized logging with safe invalid-level fallback
+- Added GitHub Actions for Python 3.11 and 3.14 on pushes and pull requests
+- Added an independent dependency vulnerability audit job
+- Added weekly Dependabot checks for Python and GitHub Actions dependencies
+- Added CI coverage artifact upload and a README status badge
+- Added `docs/TROUBLESHOOTING.md` for quality commands, startup, logging, and audit
+  failures
+
+Verification:
+
+- Unified local quality gate: passed
+- Ruff formatting, linting, and docstring rules: passed
+- Mypy strict mode: no issues in 23 checked source files
+- Pytest: 36 passed
+- Branch-aware coverage: 82.83% (80% required)
+- Live pip-audit: no known vulnerabilities; local unpublished package skipped as expected
+
 ## Current state
 
-- Active milestone: Milestone 7 - Engineering automation
-- Last completed milestone: Milestone 6 - Core user experience
+- Active milestone: Milestone 8 - Visual polish and accessibility
+- Last completed milestone: Milestone 7 - Engineering automation
 - Latest quality result: PASS with zero issues
 
 ## Open decisions
@@ -212,5 +240,5 @@ Verification:
 
 ## Next task
 
-Add continuous integration, type checking, coverage reporting, dependency and security
-checks, standardized developer commands, and documented troubleshooting.
+Refine the visual system, responsive layouts, keyboard and contrast behavior, chart
+accessibility, loading performance, screenshots, and final presentation polish.

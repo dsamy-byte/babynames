@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Literal
+from typing import Literal, cast
 
 import altair as alt
 import pandas as pd
@@ -12,7 +12,7 @@ Metric = Literal["count", "rank", "share"]
 
 def annual_applications_chart(totals: pd.DataFrame) -> alt.Chart:
     """Chart annual published application totals with explicit labels and tooltips."""
-    return (
+    chart = (
         alt.Chart(totals, title="Published applications by year")
         .mark_area(line={"color": "#6C4AB6"}, color="#C9B8EE", opacity=0.55)
         .encode(
@@ -26,6 +26,7 @@ def annual_applications_chart(totals: pd.DataFrame) -> alt.Chart:
         .properties(height=320)
         .interactive()
     )
+    return cast(alt.Chart, chart)
 
 
 def history_chart(history: pd.DataFrame, metric: Metric) -> alt.Chart:
@@ -37,7 +38,7 @@ def history_chart(history: pd.DataFrame, metric: Metric) -> alt.Chart:
     }
     scale = alt.Scale(reverse=True, zero=False) if metric == "rank" else alt.Scale(zero=False)
     value_format = ".2%" if metric == "share" else ","
-    return (
+    chart = (
         alt.Chart(history, title=f"{titles[metric]} over time")
         .mark_line(point=alt.OverlayMarkDef(size=35))
         .encode(
@@ -53,6 +54,7 @@ def history_chart(history: pd.DataFrame, metric: Metric) -> alt.Chart:
         .properties(height=380)
         .interactive()
     )
+    return cast(alt.Chart, chart)
 
 
 def comparison_chart(history: pd.DataFrame, metric: Metric) -> alt.Chart:
@@ -64,7 +66,7 @@ def comparison_chart(history: pd.DataFrame, metric: Metric) -> alt.Chart:
     }
     scale = alt.Scale(reverse=True, zero=False) if metric == "rank" else alt.Scale(zero=False)
     value_format = ".2%" if metric == "share" else ","
-    return (
+    chart = (
         alt.Chart(history, title=f"Name comparison by {titles[metric].lower()}")
         .mark_line(point=False)
         .encode(
@@ -80,3 +82,4 @@ def comparison_chart(history: pd.DataFrame, metric: Metric) -> alt.Chart:
         .properties(height=420)
         .interactive()
     )
+    return cast(alt.Chart, chart)

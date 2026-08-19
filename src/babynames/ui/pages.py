@@ -3,14 +3,24 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any
+from typing import Any, cast
 
 import streamlit as st
 
 from babynames.analytics import BabyNameAnalytics
-from babynames.ui.charts import annual_applications_chart, comparison_chart, history_chart
+from babynames.ui.charts import (
+    Metric,
+    annual_applications_chart,
+    comparison_chart,
+    history_chart,
+)
 
 CATEGORY_LABELS = {"F": "Female source category", "M": "Male source category"}
+METRIC_LABELS = {
+    "count": "Applications",
+    "rank": "Rank",
+    "share": "Category share",
+}
 
 
 def _preferred_name(names: tuple[str, ...], preferred: str) -> int:
@@ -41,6 +51,11 @@ def _select_year(label: str, first_year: int, last_year: int, *, value: int, key
         value=value,
         key=key,
     )
+
+
+def _metric_label(metric: str) -> str:
+    """Return the user-facing label for a supported analytical metric."""
+    return METRIC_LABELS[metric]
 
 
 def render_overview(analytics: BabyNameAnalytics, manifest: Mapping[str, Any]) -> None:
@@ -111,19 +126,19 @@ def render_explore(analytics: BabyNameAnalytics) -> None:
     peak.metric("Peak annual count", f"{summary.peak_count:,}", f"in {summary.peak_count_year}")
     rank.metric("Best rank", f"#{summary.best_rank}", f"in {summary.best_rank_year}")
 
-    metric_label = st.segmented_control(
-        "Chart metric",
-        options=["count", "rank", "share"],
-        default="count",
-        format_func={
-            "count": "Applications",
-            "rank": "Rank",
-            "share": "Category share",
-        }.get,
-        key="explore_metric",
+    metric_label = cast(
+        Metric,
+        st.segmented_control(
+            "Chart metric",
+            options=["count", "rank", "share"],
+            default="count",
+            format_func=_metric_label,
+            key="explore_metric",
+        )
+        or "count",
     )
     st.altair_chart(
-        history_chart(history, metric_label or "count"),
+        history_chart(history, metric_label),
         width="stretch",
         theme="streamlit",
     )
@@ -164,20 +179,20 @@ def render_compare(analytics: BabyNameAnalytics) -> None:
         st.info("Choose at least two names to compare.")
         return
 
-    metric = st.segmented_control(
-        "Comparison metric",
-        options=["share", "count", "rank"],
-        default="share",
-        format_func={
-            "share": "Category share",
-            "count": "Applications",
-            "rank": "Rank",
-        }.get,
-        key="compare_metric",
+    metric = cast(
+        Metric,
+        st.segmented_control(
+            "Comparison metric",
+            options=["share", "count", "rank"],
+            default="share",
+            format_func=_metric_label,
+            key="compare_metric",
+        )
+        or "share",
     )
     history = analytics.compare_names(selected_names, selected_sex)
     st.altair_chart(
-        comparison_chart(history, metric or "share"),
+        comparison_chart(history, metric),
         width="stretch",
         theme="streamlit",
     )

@@ -1,5 +1,7 @@
 # Baby Names
 
+[![Quality](https://github.com/dsamy-byte/babynames/actions/workflows/quality.yml/badge.svg)](https://github.com/dsamy-byte/babynames/actions/workflows/quality.yml)
+
 Baby Names is a polished local Streamlit application for exploring United States
 baby-name trends in Social Security Administration national data from 1880 onward.
 
@@ -77,9 +79,14 @@ commands needed to recover safely.
 Run the automated checks:
 
 ```powershell
-python -m ruff check .
-python -m pytest
+python scripts/check.py
 ```
+
+This single gate checks formatting, lint and docstring rules, strict static types,
+all tests, branch coverage, and the 80% coverage threshold. Add `--audit` to query
+current dependency vulnerability information. See
+[`docs/TROUBLESHOOTING.md`](docs/TROUBLESHOOTING.md) for individual commands and
+common local issues.
 
 The raw-data rules and processed-data schema are documented in
 [`docs/DATA_CONTRACT.md`](docs/DATA_CONTRACT.md). The latest validation results are

@@ -85,11 +85,14 @@ def sha256_file(path: Path, *, block_size: int = 1024 * 1024) -> str:
 
 def _read_annual_file(path: Path, year: int) -> pa.Table:
     """Read one prevalidated annual CSV file into the processed schema."""
-    source = pacsv.read_csv(
+    # PyArrow's distributed stubs omit public CSV and compute symbols used here.
+    source = pacsv.read_csv(  # type: ignore[attr-defined]
         path,
-        read_options=pacsv.ReadOptions(column_names=["name", "sex", "count"]),
-        parse_options=pacsv.ParseOptions(delimiter=","),
-        convert_options=pacsv.ConvertOptions(
+        read_options=pacsv.ReadOptions(  # type: ignore[attr-defined]
+            column_names=["name", "sex", "count"]
+        ),
+        parse_options=pacsv.ParseOptions(delimiter=","),  # type: ignore[attr-defined]
+        convert_options=pacsv.ConvertOptions(  # type: ignore[attr-defined]
             column_types={"name": pa.string(), "sex": pa.string(), "count": pa.int32()}
         ),
     )
@@ -108,7 +111,7 @@ def _read_annual_file(path: Path, year: int) -> pa.Table:
 def _canonicalize(tables: list[pa.Table]) -> pa.Table:
     """Combine annual tables and impose a stable order independent of source order."""
     combined = pa.concat_tables(tables)
-    order = pc.sort_indices(
+    order = pc.sort_indices(  # type: ignore[attr-defined]
         combined,
         sort_keys=[
             ("year", "ascending"),
@@ -117,7 +120,7 @@ def _canonicalize(tables: list[pa.Table]) -> pa.Table:
             ("name", "ascending"),
         ],
     )
-    return pc.take(combined, order)
+    return pc.take(combined, order)  # type: ignore[no-untyped-call]
 
 
 def _write_parquet_atomically(table: pa.Table, output_path: Path) -> None:
@@ -132,7 +135,7 @@ def _write_parquet_atomically(table: pa.Table, output_path: Path) -> None:
             delete=False,
         ) as temporary:
             temporary_path = Path(temporary.name)
-        pq.write_table(
+        pq.write_table(  # type: ignore[no-untyped-call]
             table,
             temporary_path,
             compression=PARQUET_COMPRESSION,

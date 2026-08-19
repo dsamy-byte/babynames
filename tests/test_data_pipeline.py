@@ -25,7 +25,9 @@ def test_build_writes_canonical_parquet_and_manifest(tmp_path: Path) -> None:
     write_year(raw_dir, 2001, "Amy,F,6\nBob,M,9\n")
 
     manifest = build_dataset(raw_dir, output_dir, first_year=2000, expected_last_year=2001)
-    table = pq.read_table(output_dir / "baby_names.parquet")
+    table = pq.read_table(  # type: ignore[no-untyped-call]
+        output_dir / "baby_names.parquet"
+    )
     stored_manifest = json.loads((output_dir / "manifest.json").read_text(encoding="utf-8"))
 
     assert table.to_pydict() == {

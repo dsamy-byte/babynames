@@ -15,6 +15,8 @@ data and analytical services. Page code must not read raw files or redefine metr
 
 Unexpected load failures are logged for developers while users receive a concise
 recovery message. Credentials and internal exception details are never rendered.
+Logging is configured centrally through `logging_config.py`; the optional
+`BABYNAMES_LOG_LEVEL` variable controls verbosity without changing application code.
 
 ## Module boundaries
 
@@ -27,6 +29,7 @@ recovery message. Credentials and internal exception details are never rendered.
 | `ui/data_access.py` | Cache the analytics service across Streamlit reruns |
 | `ui/pages.py` | Render page content using public domain methods |
 | `app.py` | Configure Streamlit, handle startup, and define navigation |
+| `logging_config.py` | Validate and apply consistent local diagnostic logging |
 
 ## Navigation
 

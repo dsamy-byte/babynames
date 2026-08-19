@@ -12,7 +12,9 @@ def test_full_snapshot_builds_with_expected_metadata(tmp_path: Path) -> None:
     project_root = Path(__file__).resolve().parents[1]
 
     manifest = build_dataset(project_root / "data" / "raw" / "names", tmp_path)
-    parquet_file = pq.ParquetFile(tmp_path / manifest.parquet_file)
+    parquet_file = pq.ParquetFile(  # type: ignore[no-untyped-call]
+        tmp_path / manifest.parquet_file
+    )
 
     assert manifest.rows == 2_181_032
     assert manifest.applications == 375_362_447

@@ -9,6 +9,7 @@ import streamlit as st
 
 from babynames.analytics import AnalyticsError
 from babynames.artifacts import inspect_processed_artifacts
+from babynames.logging_config import configure_logging
 from babynames.settings import ProjectSettings
 from babynames.ui.data_access import load_analytics
 from babynames.ui.pages import (
@@ -34,6 +35,7 @@ def _render_build_guidance(message: str) -> None:
 
 def main() -> None:
     """Configure the application, load data safely, and run page navigation."""
+    configure_logging()
     st.set_page_config(
         page_title="Baby Names",
         page_icon="👶",
