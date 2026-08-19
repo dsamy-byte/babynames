@@ -8,6 +8,10 @@ baby-name trends in Social Security Administration national data from 1880 onwar
 The repository foundation and raw source dataset are in place. Data processing,
 analysis, and application features will be implemented in subsequent milestones.
 
+See [`docs/ROADMAP.md`](docs/ROADMAP.md) for the full milestone plan and completion
+criteria. See [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md) for current decisions, completed
+work, and the exact next task.
+
 ## Repository layout
 
 ```text
