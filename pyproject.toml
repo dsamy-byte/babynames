@@ -8,6 +8,7 @@ version = "0.1.0"
 description = "A local Streamlit application for exploring U.S. baby-name trends."
 readme = "README.md"
 requires-python = ">=3.11"
+license = "MIT"
 authors = [
   { name = "sammy", email = "dsamyuktha@gmail.com" },
 ]

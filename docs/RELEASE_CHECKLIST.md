@@ -21,7 +21,7 @@ the signed-off commit is tagged.
 
 ## Required before `v1.0.0`
 
-- [ ] Select and add a software license
+- [x] Select and add the MIT License
 - [ ] Update package version from `0.1.0` to `1.0.0`
 - [ ] Finalize the release notes and known-limitations wording
 - [ ] Run the complete quality gate after release metadata changes

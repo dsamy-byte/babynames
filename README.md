@@ -109,4 +109,6 @@ in [`CHANGELOG.md`](CHANGELOG.md).
 
 ## License
 
-No license has been selected yet. Until one is added, all rights are reserved.
+The application source code is available under the [MIT License](LICENSE). The
+included Social Security Administration source data remains subject to its source
+terms and is not relicensed by this repository.

@@ -21,6 +21,8 @@ comparing, and visualizing U.S. baby-name data.
 - This file is updated whenever a milestone or material project decision changes
 - The complete execution plan and definition of done are maintained in
   `docs/ROADMAP.md`
+- Application source license: MIT, copyright 2026 `sammy`
+- The included SSA source data is not relicensed by the application license
 
 ## Data snapshot
 
@@ -283,21 +285,20 @@ Completed:
   strict typing, formatting, linting, and no known dependency vulnerabilities
 - Confirmed GitHub Actions independently passes on Python 3.11 and Python 3.14
 - Added a durable release checklist, explicit known limitations, and draft changelog
+- Added the MIT License and declared it in package and user-facing metadata while
+  distinguishing the separately sourced SSA data
 
 Remaining:
 
-- Choose and add the license
 - Perform manual keyboard, 200% zoom, and screen-reader acceptance checks
 - Finalize `v1.0.0` metadata and release notes
 - Obtain explicit approval before creating and pushing the release tag
 
 ## Open decisions
 
-- Select a software license before the first public release
 - Select the exact `v1.0.0` release notes and known-limitations wording
 
 ## Next task
 
-Select and add the software license, then complete the remaining manual accessibility
-acceptance checks and `v1.0.0` release metadata. Create the tag only after explicit
-approval.
+Complete the remaining manual accessibility acceptance checks and `v1.0.0` release
+metadata. Create the tag only after explicit approval.
