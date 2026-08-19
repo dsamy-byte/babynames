@@ -139,6 +139,30 @@ class BabyNameAnalytics:
             raise AnalyticsInputError(f"Name was not found: {name!r}")
         return self._canonical_names[normalized]
 
+    def available_names(self, sex: str | None = None) -> tuple[str, ...]:
+        """Return canonical name spellings in case-insensitive alphabetical order."""
+        data = self._data
+        if sex is not None:
+            data = data.loc[data["sex"] == self._validate_sex(sex)]
+        return tuple(sorted(data["name"].unique(), key=str.casefold))
+
+    def name_categories(self, name: str) -> tuple[str, ...]:
+        """Return source sex categories with published observations for a name."""
+        canonical_name = self._resolve_name(name)
+        categories = self._data.loc[self._data["name"] == canonical_name, "sex"].unique()
+        return tuple(sorted(categories))
+
+    def annual_totals(self, sex: str | None = None) -> pd.DataFrame:
+        """Return total published applications per year, optionally for one category."""
+        data = self._data
+        if sex is not None:
+            data = data.loc[data["sex"] == self._validate_sex(sex)]
+        return (
+            data.groupby("year", observed=True, as_index=False)["count"]
+            .sum()
+            .sort_values("year", ignore_index=True)
+        )
+
     def rankings(self, year: int, sex: str, *, limit: int = 10) -> pd.DataFrame:
         """Return the most popular names for one year and source sex category."""
         self._validate_year(year)

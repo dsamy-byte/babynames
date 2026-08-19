@@ -1,4 +1,4 @@
-"""Documented page renderers for the Streamlit application shell."""
+"""Interactive page renderers for the Streamlit application."""
 
 from __future__ import annotations
 
@@ -8,61 +8,287 @@ from typing import Any
 import streamlit as st
 
 from babynames.analytics import BabyNameAnalytics
+from babynames.ui.charts import annual_applications_chart, comparison_chart, history_chart
+
+CATEGORY_LABELS = {"F": "Female source category", "M": "Male source category"}
+
+
+def _preferred_name(names: tuple[str, ...], preferred: str) -> int:
+    """Return a stable selectbox index, falling back to the first available name."""
+    try:
+        return names.index(preferred)
+    except ValueError:
+        return 0
+
+
+def _select_year(label: str, first_year: int, last_year: int, *, value: int, key: str) -> int:
+    """Render a year slider, or a disabled number field for single-year datasets."""
+    if first_year == last_year:
+        return int(
+            st.number_input(
+                label,
+                min_value=first_year,
+                max_value=last_year,
+                value=first_year,
+                disabled=True,
+                key=key,
+            )
+        )
+    return st.slider(
+        label,
+        min_value=first_year,
+        max_value=last_year,
+        value=value,
+        key=key,
+    )
 
 
 def render_overview(analytics: BabyNameAnalytics, manifest: Mapping[str, Any]) -> None:
-    """Render dataset context and a useful first view of the latest rankings."""
+    """Render dataset context, long-term volume, and configurable yearly rankings."""
     first_year, last_year = analytics.year_range
     st.title("Baby Names")
-    st.caption("Explore 146 years of U.S. Social Security baby-name records.")
+    st.caption("Explore U.S. Social Security baby-name records across generations.")
 
     coverage, records, applications = st.columns(3)
     coverage.metric("Coverage", f"{first_year}–{last_year}")
     records.metric("Published records", f"{int(manifest['rows']):,}")
     applications.metric("Recorded applications", f"{int(manifest['applications']):,}")
+    st.altair_chart(
+        annual_applications_chart(analytics.annual_totals()),
+        width="stretch",
+        theme="streamlit",
+    )
+    st.caption(
+        "Totals represent published Social Security applications in this dataset, "
+        "not every U.S. birth. Names with fewer than five observations are suppressed."
+    )
 
-    st.subheader(f"Most popular names in {last_year}")
+    ranking_year = _select_year(
+        "Ranking year",
+        first_year,
+        last_year,
+        value=last_year,
+        key="overview_year",
+    )
+    st.subheader(f"Most popular names in {ranking_year}")
     female, male = st.columns(2)
-    with female:
-        st.markdown("**Female source category**")
-        st.dataframe(
-            analytics.rankings(last_year, "F"),
-            hide_index=True,
-            width="stretch",
-            column_config={"share": st.column_config.NumberColumn(format="%.2%%")},
-        )
-    with male:
-        st.markdown("**Male source category**")
-        st.dataframe(
-            analytics.rankings(last_year, "M"),
-            hide_index=True,
-            width="stretch",
-            column_config={"share": st.column_config.NumberColumn(format="%.2%%")},
-        )
+    for column, sex in ((female, "F"), (male, "M")):
+        with column:
+            st.markdown(f"**{CATEGORY_LABELS[sex]}**")
+            st.dataframe(
+                analytics.rankings(ranking_year, sex),
+                hide_index=True,
+                width="stretch",
+                column_config={"share": st.column_config.NumberColumn(format="%.2%%")},
+            )
 
 
-def render_explore() -> None:
-    """Render the reserved shell for individual-name discovery."""
+def render_explore(analytics: BabyNameAnalytics) -> None:
+    """Render searchable history, summary milestones, charts, and source observations."""
     st.title("Explore a name")
-    st.info(
-        "Name search, historical charts, rankings, and lifetime summaries arrive in Milestone 6."
+    st.caption("Search is case-insensitive; displayed spelling comes from the source data.")
+    names = analytics.available_names()
+    selected_name = st.selectbox(
+        "Name",
+        names,
+        index=_preferred_name(names, "Olivia"),
+        key="explore_name",
+    )
+    categories = analytics.name_categories(selected_name)
+    selected_sex = st.radio(
+        "Source category",
+        categories,
+        format_func=CATEGORY_LABELS.get,
+        horizontal=True,
+        key="explore_sex",
+    )
+    history = analytics.name_history(selected_name, selected_sex)
+    summary = analytics.name_summary(selected_name, selected_sex)
+
+    first, total, peak, rank = st.columns(4)
+    first.metric("Published span", f"{summary.first_year}–{summary.last_year}")
+    total.metric("Recorded applications", f"{summary.total_applications:,}")
+    peak.metric("Peak annual count", f"{summary.peak_count:,}", f"in {summary.peak_count_year}")
+    rank.metric("Best rank", f"#{summary.best_rank}", f"in {summary.best_rank_year}")
+
+    metric_label = st.segmented_control(
+        "Chart metric",
+        options=["count", "rank", "share"],
+        default="count",
+        format_func={
+            "count": "Applications",
+            "rank": "Rank",
+            "share": "Category share",
+        }.get,
+        key="explore_metric",
+    )
+    st.altair_chart(
+        history_chart(history, metric_label or "count"),
+        width="stretch",
+        theme="streamlit",
+    )
+    st.caption(
+        "Gaps mean the name was not published for that category and year; they are not zeros."
+    )
+    with st.expander("View published observations"):
+        st.dataframe(
+            history.sort_values("year", ascending=False),
+            hide_index=True,
+            width="stretch",
+            column_config={"share": st.column_config.NumberColumn(format="%.3%%")},
+        )
+
+
+def render_compare(analytics: BabyNameAnalytics) -> None:
+    """Render a category-specific comparison for two to five names."""
+    st.title("Compare names")
+    selected_sex = st.radio(
+        "Source category",
+        ("F", "M"),
+        format_func=CATEGORY_LABELS.get,
+        horizontal=True,
+        key="compare_sex",
+    )
+    names = analytics.available_names(selected_sex)
+    preferred = [name for name in ("Olivia", "Emma") if name in names]
+    defaults = preferred if len(preferred) == 2 else list(names[:2])
+    selected_names = st.multiselect(
+        "Names",
+        names,
+        default=defaults,
+        max_selections=5,
+        key="compare_names",
+        help="Choose between two and five names.",
+    )
+    if len(selected_names) < 2:
+        st.info("Choose at least two names to compare.")
+        return
+
+    metric = st.segmented_control(
+        "Comparison metric",
+        options=["share", "count", "rank"],
+        default="share",
+        format_func={
+            "share": "Category share",
+            "count": "Applications",
+            "rank": "Rank",
+        }.get,
+        key="compare_metric",
+    )
+    history = analytics.compare_names(selected_names, selected_sex)
+    st.altair_chart(
+        comparison_chart(history, metric or "share"),
+        width="stretch",
+        theme="streamlit",
+    )
+    st.caption(
+        "Only published observations are connected. Missing years reflect suppression "
+        "or absence from the published source."
+    )
+    summaries = [analytics.name_summary(name, selected_sex) for name in selected_names]
+    st.dataframe(
+        [
+            {
+                "Name": summary.name,
+                "First year": summary.first_year,
+                "Last year": summary.last_year,
+                "Years published": summary.years_published,
+                "Applications": summary.total_applications,
+                "Peak count": summary.peak_count,
+                "Peak year": summary.peak_count_year,
+                "Best rank": summary.best_rank,
+            }
+            for summary in summaries
+        ],
+        hide_index=True,
+        width="stretch",
     )
 
 
-def render_compare() -> None:
-    """Render the reserved shell for multi-name comparisons."""
-    st.title("Compare names")
-    st.info("Side-by-side name comparison arrives in Milestone 6.")
-
-
-def render_trends() -> None:
-    """Render the reserved shell for trend and unisex-name discovery."""
+def render_trends(analytics: BabyNameAnalytics) -> None:
+    """Render endpoint movers and annual unisex-name discovery tools."""
     st.title("Discover trends")
-    st.info("Rising, falling, and unisex-name exploration arrives in Milestone 6.")
+    movers_tab, unisex_tab = st.tabs(["Rising and falling", "Unisex names"])
+    first_year, last_year = analytics.year_range
+
+    with movers_tab:
+        if first_year == last_year:
+            st.info("Trend changes require at least two years of processed data.")
+        else:
+            start_default = max(first_year, last_year - 10)
+            start_year, end_year = st.slider(
+                "Comparison years",
+                min_value=first_year,
+                max_value=last_year,
+                value=(start_default, last_year),
+                key="trend_years",
+            )
+            selected_sex = st.radio(
+                "Source category",
+                ("F", "M"),
+                format_func=CATEGORY_LABELS.get,
+                horizontal=True,
+                key="trend_sex",
+            )
+            direction = st.radio(
+                "Direction",
+                ("rising", "falling"),
+                horizontal=True,
+                key="trend_direction",
+            )
+            limit = st.select_slider(
+                "Number of names",
+                options=(10, 25, 50, 100),
+                value=25,
+                key="trend_limit",
+            )
+            changes = analytics.trend_changes(
+                start_year,
+                end_year,
+                selected_sex,
+                direction=direction,
+                limit=limit,
+            )
+            st.dataframe(
+                changes,
+                hide_index=True,
+                width="stretch",
+                column_config={
+                    "start_share": st.column_config.NumberColumn(format="%.3%%"),
+                    "end_share": st.column_config.NumberColumn(format="%.3%%"),
+                    "share_change": st.column_config.NumberColumn(format="%+.3%%"),
+                },
+            )
+            st.caption(
+                "Positive rank change means movement toward rank one. Only names "
+                "published at both endpoints are eligible."
+            )
+
+    with unisex_tab:
+        selected_year = _select_year(
+            "Year",
+            first_year,
+            last_year,
+            value=last_year,
+            key="unisex_year",
+        )
+        unisex = analytics.unisex_names(selected_year, limit=100)
+        st.dataframe(
+            unisex,
+            hide_index=True,
+            width="stretch",
+            column_config={
+                "female_share": st.column_config.NumberColumn(format="%.1%%"),
+                "balance_score": st.column_config.ProgressColumn(min_value=0, max_value=1),
+            },
+        )
+        st.caption(
+            "Balance approaches 1 when published counts are similar across both source categories."
+        )
 
 
 def render_about(manifest: Mapping[str, Any]) -> None:
-    """Render source provenance, limitations, and local build information."""
+    """Render source provenance, limitations, metric links, and build information."""
     st.title("About the data")
     st.markdown(
         "This application uses national Social Security card application records. "
@@ -72,6 +298,10 @@ def render_about(manifest: Mapping[str, Any]) -> None:
     st.markdown(
         "The historical `F` and `M` values are source categories and are not a "
         "complete representation of gender identity."
+    )
+    st.markdown(
+        "Ranks use competition ranking, shares use each year/category total, and trend "
+        "movers require publication at both endpoints. See `docs/METRICS.md` for exact definitions."
     )
     st.subheader("Local artifact")
     st.code(

@@ -64,9 +64,21 @@ def main() -> None:
                     url_path="overview",
                     default=True,
                 ),
-                st.Page(render_explore, title="Name search", url_path="names"),
-                st.Page(render_compare, title="Compare", url_path="compare"),
-                st.Page(render_trends, title="Trends", url_path="trends"),
+                st.Page(
+                    partial(render_explore, analytics),
+                    title="Name search",
+                    url_path="names",
+                ),
+                st.Page(
+                    partial(render_compare, analytics),
+                    title="Compare",
+                    url_path="compare",
+                ),
+                st.Page(
+                    partial(render_trends, analytics),
+                    title="Trends",
+                    url_path="trends",
+                ),
             ],
             "Project": [
                 st.Page(

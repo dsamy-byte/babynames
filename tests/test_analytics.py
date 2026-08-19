@@ -48,6 +48,16 @@ def test_rankings_use_competition_rank_and_category_share(
     assert result.iloc[0]["share"] == pytest.approx(10 / 31)
 
 
+def test_discovery_helpers_expose_names_categories_and_annual_totals(
+    analytics: BabyNameAnalytics,
+) -> None:
+    """UI discovery helpers should remain canonical, filterable, and aggregated."""
+    assert analytics.available_names("F") == ("Ada", "Amy", "Sam", "Zoe")
+    assert analytics.name_categories("amy") == ("F", "M")
+    assert analytics.annual_totals()["count"].tolist() == [50, 53]
+    assert analytics.annual_totals("M")["count"].tolist() == [19, 24]
+
+
 def test_history_comparison_and_summary_resolve_names_case_insensitively(
     analytics: BabyNameAnalytics,
 ) -> None:

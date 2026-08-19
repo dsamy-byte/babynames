@@ -80,7 +80,7 @@ Status: complete
 
 ## Milestone 6 - Core user experience
 
-Status: next
+Status: complete
 
 - Build an overview dashboard with key dataset facts and trends.
 - Build name search with suggestions and a complete historical profile.
@@ -91,7 +91,7 @@ Status: next
 
 ## Milestone 7 - Engineering automation
 
-Status: planned
+Status: next
 
 - Configure formatting, linting, type checking, and test coverage.
 - Add GitHub Actions checks for every push and pull request.

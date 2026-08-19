@@ -3,6 +3,9 @@
 Baby Names is a polished local Streamlit application for exploring United States
 baby-name trends in Social Security Administration national data from 1880 onward.
 
+The application includes yearly rankings, long-term volume, searchable name profiles,
+multi-name comparisons, rising and falling names, and annual unisex-name analysis.
+
 ## Project status
 
 The repository foundation and raw source dataset are in place. Data processing,
@@ -86,6 +89,8 @@ Ranking, share, trend, comparison, summary, and unisex definitions are documente
 The Streamlit startup flow, module boundaries, cache behavior, navigation, and local
 configuration are documented in
 [`docs/APP_ARCHITECTURE.md`](docs/APP_ARCHITECTURE.md).
+Page-by-page usage and interpretation guidance are available in
+[`docs/USER_GUIDE.md`](docs/USER_GUIDE.md).
 
 ## License
 

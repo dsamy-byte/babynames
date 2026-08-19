@@ -169,10 +169,40 @@ Verification:
 - Pytest: 29 passed across the complete project
 - Streamlit smoke tests: missing-data recovery and ready-data overview both passed
 
+### Milestone 6 - Core user experience
+
+Status: completed
+
+Completed:
+
+- Expanded the overview with a long-term published-application chart and selectable
+  annual category rankings
+- Added case-insensitive name discovery with category selection, summary cards,
+  applications/rank/share charts, suppression guidance, and source observations
+- Added comparison for two to five names with selectable metrics and lifetime summary
+  tables
+- Added configurable rising/falling endpoint analysis with explicit eligibility and
+  rank-change definitions
+- Added annual unisex-name discovery with category counts, female-category share, and
+  balance score
+- Added shared documented Altair chart builders with explicit axes and tooltips
+- Added safe single-year controls for valid partial datasets
+- Added direct analytics helpers for available names, categories, and annual totals
+- Added `docs/USER_GUIDE.md` with local operation and interpretation guidance
+- Added direct smoke coverage for every callable application page
+
+Verification:
+
+- Ruff formatting, linting, and docstring rules: passed
+- Pytest: 34 passed across the complete project
+- Chart contract tests: axis titles, rank direction, tooltips, and series encoding passed
+- Streamlit tests: missing-data, ready overview, name search, comparison, trends, and
+  about render paths passed
+
 ## Current state
 
-- Active milestone: Milestone 6 - Core user experience
-- Last completed milestone: Milestone 5 - Application foundation
+- Active milestone: Milestone 7 - Engineering automation
+- Last completed milestone: Milestone 6 - Core user experience
 - Latest quality result: PASS with zero issues
 
 ## Open decisions
@@ -182,5 +212,5 @@ Verification:
 
 ## Next task
 
-Build the complete overview, name-search, comparison, and trend-discovery workflows
-with clear charts, filters, tables, metric definitions, and accessible interactions.
+Add continuous integration, type checking, coverage reporting, dependency and security
+checks, standardized developer commands, and documented troubleshooting.

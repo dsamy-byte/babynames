@@ -38,8 +38,9 @@ The application has explicit, stable URL paths:
 - `/trends`
 - `/about`
 
-The overview and about pages contain working foundation content. Name search,
-comparison, and trend shells are completed in Milestone 6.
+All routes contain working content. Page renderers obtain calculations through the
+analytics service and use shared Altair builders for consistent axes, tooltips,
+category labels, and rank direction.
 
 ## Configuration
 
