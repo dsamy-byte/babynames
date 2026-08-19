@@ -71,6 +71,8 @@ python -m pytest
 The raw-data rules and processed-data schema are documented in
 [`docs/DATA_CONTRACT.md`](docs/DATA_CONTRACT.md). The latest validation results are
 available in [`reports/data_quality_report.md`](reports/data_quality_report.md).
+Ranking, share, trend, comparison, summary, and unisex definitions are documented in
+[`docs/METRICS.md`](docs/METRICS.md).
 
 ## License
 

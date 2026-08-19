@@ -59,7 +59,7 @@ Status: complete
 
 ## Milestone 4 - Analysis domain layer
 
-Status: next
+Status: complete
 
 - Implement popularity and rank by year and sex.
 - Implement individual-name history and multi-name comparison.
@@ -70,7 +70,7 @@ Status: next
 
 ## Milestone 5 - Application foundation
 
-Status: planned
+Status: next
 
 - Add pinned runtime and development dependencies.
 - Establish Streamlit entry points, page structure, navigation, configuration, and theme.

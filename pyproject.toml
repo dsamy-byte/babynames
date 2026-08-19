@@ -12,6 +12,7 @@ authors = [
   { name = "sammy", email = "dsamyuktha@gmail.com" },
 ]
 dependencies = [
+  "pandas>=2.2,<4",
   "pyarrow>=18,<25",
 ]
 

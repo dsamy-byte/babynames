@@ -121,10 +121,33 @@ Verification:
 - Full build SHA-256: `a195f6bcb5b02087fe43c1627fc1da62ef8047f146d00bc3a011f753734a4967`
 - Repeated-build manifest hashes: identical
 
+### Milestone 4 - Analysis domain layer
+
+Status: completed
+
+Completed:
+
+- Added a UI-independent `BabyNameAnalytics` service over processed Parquet data
+- Added competition rankings and within-year/category popularity shares
+- Added case-insensitive name histories, lifetime summaries, and multi-name comparison
+- Added rising and falling endpoint analysis without treating suppressed rows as zero
+- Added annual unisex-name counts, category share, and balance score
+- Added clear public input errors and processed-data contract checks
+- Documented every analytical definition and source-data limitation in
+  `docs/METRICS.md`
+- Added eleven focused analytics cases and one full-snapshot integration test
+
+Verification:
+
+- Ruff formatting, linting, and docstring rules: passed
+- Pytest: 22 passed across the complete project
+- Full analytics integration: confirmed 1880-2025 coverage, Olivia and Liam as the
+  2025 category leaders, and 5,250,638 published male applications for James
+
 ## Current state
 
-- Active milestone: Milestone 4 - Analysis domain layer
-- Last completed milestone: Milestone 3 - Reproducible data pipeline
+- Active milestone: Milestone 5 - Application foundation
+- Last completed milestone: Milestone 4 - Analysis domain layer
 - Latest quality result: PASS with zero issues
 
 ## Open decisions
@@ -134,6 +157,5 @@ Verification:
 
 ## Next task
 
-Define the analytical metric contracts, then implement and test popularity rankings,
-name histories, comparisons, trends, and unisex-name analysis independently of the
-Streamlit interface.
+Establish the Streamlit application entry point, navigation, configuration, visual
+theme, cached data access, dependency setup, and user-safe startup/error behavior.
