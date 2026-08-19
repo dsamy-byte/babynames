@@ -103,6 +103,9 @@ Page-by-page usage and interpretation guidance are available in
 [`docs/USER_GUIDE.md`](docs/USER_GUIDE.md).
 Accessibility decisions and verification are maintained in
 [`docs/ACCESSIBILITY.md`](docs/ACCESSIBILITY.md).
+Release evidence, remaining approvals, and known limitations are tracked in
+[`docs/RELEASE_CHECKLIST.md`](docs/RELEASE_CHECKLIST.md); notable changes are listed
+in [`CHANGELOG.md`](CHANGELOG.md).
 
 ## License
 

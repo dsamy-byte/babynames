@@ -265,7 +265,31 @@ Verification:
 
 - Active milestone: Milestone 9 - Release readiness
 - Last completed milestone: Milestone 8 - Visual polish and accessibility
-- Latest quality result: PASS with zero issues
+- Latest quality result: clean-clone PASS with zero issues
+
+### Milestone 9 - Release readiness
+
+Status: in progress
+
+Completed:
+
+- Audited tracked files for generated artifacts, obvious secret filenames, and prior
+  release tags; no release blockers were found
+- Verified the documented setup from a disposable fresh clone and fresh Python 3.14.6
+  virtual environment
+- Revalidated all 146 raw files with zero issues and reproduced the exact processed
+  dataset row count, byte size, and SHA-256 checksum
+- Passed the complete fresh-environment quality gate: 39 tests, 83.48% branch coverage,
+  strict typing, formatting, linting, and no known dependency vulnerabilities
+- Confirmed GitHub Actions independently passes on Python 3.11 and Python 3.14
+- Added a durable release checklist, explicit known limitations, and draft changelog
+
+Remaining:
+
+- Choose and add the license
+- Perform manual keyboard, 200% zoom, and screen-reader acceptance checks
+- Finalize `v1.0.0` metadata and release notes
+- Obtain explicit approval before creating and pushing the release tag
 
 ## Open decisions
 
@@ -274,6 +298,6 @@ Verification:
 
 ## Next task
 
-Run release-readiness validation from a clean environment, verify supported setup,
-resolve or document remaining limitations, select a license, prepare release notes,
-and tag version `v1.0.0` only after explicit approval.
+Select and add the software license, then complete the remaining manual accessibility
+acceptance checks and `v1.0.0` release metadata. Create the tag only after explicit
+approval.

@@ -111,7 +111,7 @@ Status: complete
 
 ## Milestone 9 - Release readiness
 
-Status: next
+Status: in progress
 
 - Run the full test and data-validation suites from a clean environment.
 - Verify documented setup on the supported Python version.
